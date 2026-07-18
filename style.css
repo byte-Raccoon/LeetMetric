@@ -6,7 +6,7 @@
 }
 
 body{
-  background-color: #F688BD; /* brilliant rose */
+  background-color: #F33A6A; /* brilliant rose */
   color: #0D0628;
   height: 100vh;
   display: flex;
@@ -51,8 +51,8 @@ h1{
 #search-btn{
   padding: 0.3rem;
   border-radius: 6px;
-  background-color: #ED127C;
-  border-color: #ED127C;
+  background-color: #f10e4b;
+  border-color: #f10e4b;
   color: #12ed91;
   width: 7rem;
 }

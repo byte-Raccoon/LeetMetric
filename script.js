@@ -33,8 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // api call
-  async function fetchUserDetails(username) {
-
+async function fetchUserDetails(username) {
     try {
       searchButton.textContent = "Searching....";
       searchButton.disabled = true;
@@ -46,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const graphql = JSON.stringify({
         query: "query userSessionProgress($username: String!) {\n  allQuestionsCount {\n    difficulty\n    count\n  }\n  matchedUser(username: $username) {\n    submitStats {\n      acSubmissionNum {\n        difficulty\n        count\n        submissions\n      }\n      totalSubmissionNum {\n        difficulty\n        count\n        submissions\n      }\n    }\n  }\n}",
       variables: {"username": `${username}`}})
-    const requestOptions = {
+      const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: graphql,
@@ -63,23 +62,31 @@ document.addEventListener("DOMContentLoaded", function() {
       displayUserData(parsedData); 
     }
     catch(error){
-      statsContainer.innerHTML = `<p>No Data Found!!!!</p>`
+      statsContainer.innerHTML = `<p>No Data Found!!!! ${error}</p>`
+      setTimeout(() => {
+        windowReload();}, 5000);
     }
     finally{
       searchButton.textContent = "Search";
       searchButton.disabled = false;
-      searchButton.style.cssText = "  background-color: #ED127C;border-color: #ED127C;color: #12ed91;"
+      searchButton.style.cssText = "  background-color: #ED127C;border-color: #ED127C;color: #12ed91;";
     }
-  }
 
+// 2. Your separate windowReload function definition:
+  function windowReload() {
+  let container = document.querySelector('.stats-container');
+  container.innerHTML = '<p>Time</p>'
+  // This delays the actual browser refresh by 500ms so you can see the log
+    setTimeout(() => {
+      window.location.reload();}, 500); }
+}
   // progress label and circle
   function updateProgess(solved, total, label, circle){
     const progressDegree = (solved/total) * 100;
     circle.style.setProperty("--progress-degree", `${progressDegree}%`);
     label.textContent = `${solved}/${total}`;
-
   }
-  
+
   // progress data
   function displayUserData(parsedData){
     const totalQues = parsedData.data.allQuestionsCount[0].count;
@@ -92,10 +99,24 @@ document.addEventListener("DOMContentLoaded", function() {
     const solvedTotalMediumQues = parsedData.data.matchedUser.submitStats.acSubmissionNum[2].count;
     const solvedTotalHardQues = parsedData.data.matchedUser.submitStats.acSubmissionNum[3].count;
 
+    // for (submission in parsedData.data.matchedUser.submitStats.totalSubmissionNum){
+    //   let NoOfsubmissions = parsedData.data.matchedUser.submitStats.totalSubmissionNum[submission];
+    //   // dataCard(NoOfsubmissions);
+    //   let submissionData = [];
+    //   submissionData.push(NoOfsubmissions.submissions)
+    // }
+    // console.log(submissionData)
+
     updateProgess(solvedTotalEasyQues, totalEasyQues, easyLabel, easyProgressCircle);
     updateProgess(solvedTotalMediumQues, totalMediumQues, mediumLabel, mediumProgressCircle);
     updateProgess(solvedTotalHardQues, totalHardQues, hardLabel, hardProgressCircle);
+
   }
+
+  // function dataCard(submission){
+  //   cardStatsContainer.innerHTML = 
+  // }
+
 
   // search btn
   searchButton.addEventListener('click', function() {
@@ -104,8 +125,5 @@ document.addEventListener("DOMContentLoaded", function() {
     if(validateUsername(username)) {
       fetchUserDetails(username);
     }
-
   })
-
-
 })
