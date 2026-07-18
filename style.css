@@ -54,6 +54,7 @@ h1{
   background-color: #ED127C;
   border-color: #ED127C;
   color: #12ed91;
+  width: 7rem;
 }
 
 .circle{
@@ -68,7 +69,9 @@ h1{
   font-size: 16px;
   color: #18020C;
   font-weight: 500;
-  background: conic-gradient(#C20F66  var(--progres-degree, 40%),#FABDDA 0%)
+  background: conic-gradient(#C20F66  var(--progress-degree, 0%),#FABDDA 0%);
+  display: flex;
+  flex-direction: column;
 }
 
 .circle span{
